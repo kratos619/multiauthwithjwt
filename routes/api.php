@@ -22,5 +22,6 @@ Route::group(['prefix' => 'admin','middleware' => ['assign.guard:apiadmin','jwt.
 });
 Route::group(['prefix' => 'customer','middleware' => ['assign.guard:apicustomer','jwt.auth']],function ()
 {
-	Route::get('/demo','SubadminController@demo');	
+	Route::post('me',"CustomerAuthController@me");
+	Route::post('logout',"CustomerAuthController@logout");
 });

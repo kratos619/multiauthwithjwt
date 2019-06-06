@@ -42,7 +42,11 @@ class CustomerAuthController extends Controller
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = Customer::create($input);
-        return response()->json("/home", 200);
+        if($user){
+            $credentials = request(['email', 'password']);
+            $token = $this->guard()->attempt($credentials);
+            return $this->respondWithToken($token);
+        }
     }
 
 
@@ -64,7 +68,12 @@ class CustomerAuthController extends Controller
 
      public function me()
     {
-        return response()->json(auth()->user());
+        if(!auth()){
+            return response()->json("Not Authorised User", 200);
+        }else{
+
+            return response()->json(auth()->user());
+        }
     }
 
     /**
